@@ -1,0 +1,13 @@
+sudo: required
+#make sure docker is installed before starting
+services:
+  - docker
+
+#install 
+before_install:
+  - docker build -t tylrdnns/docker-react:latest -f Dockerfile.dev .
+
+#travis assumes tests are ran then window immediately closes, but default behavior of npm run test is to leave testing suite running
+#use -- --coverage to auto close it
+script:
+  - docker run tylrdnns/docker-react npm run test -- --coverage
