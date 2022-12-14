@@ -10,4 +10,4 @@ before_install:
 #travis assumes tests are ran then window immediately closes, but default behavior of npm run test is to leave testing suite running
 #use -- --coverage to auto close it
 script:
-  - docker run tylrdnns/docker-react npm run test -- --coverage
+  - docker run -e CI=true tylrdnns/docker-react npm run test
