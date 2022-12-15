@@ -1,0 +1,25 @@
+sudo: required
+#make sure docker is installed before starting
+services:
+  - docker
+
+#install 
+before_install:
+  - docker build -t tylrdnns/docker-react:latest -f Dockerfile.dev .
+
+#travis assumes tests are ran then window immediately closes, but default behavior of npm run test is to leave testing suite running
+#use -- --coverage to auto close it
+script:
+  - docker run -e CI=true tylrdnns/docker-react npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-1"
+  app: "docker-react"
+  env: "Dockerreact-env"
+  bucket_name: "elasticbeanstalk-us-east-1-817345837297"
+  bucket_path: "docker-react"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: "$AWS_SECRET_KEY"
